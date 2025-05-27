@@ -16,9 +16,13 @@ function guardarRegistro(datos) {
   const sheet = ss.getSheetByName("ocupacion");
   const cedulaIngresada = String(datos.numeroCedula).trim();
 
-  const data = sheet.getRange(2, 1, sheet.getLastRow() - 1, 1).getValues(); // Solo columna A desde fila 2
+  let cedulasExistentes = [];
+  const ultimaFila = sheet.getLastRow();
 
-  const cedulasExistentes = data.map(row => String(row[0]).trim());
+  if (ultimaFila > 1) { // Si hay al menos una fila de datos
+    const data = sheet.getRange(2, 1, ultimaFila - 1, 1).getValues(); // Solo columna A desde fila 2
+    cedulasExistentes = data.map(row => String(row[0]).trim());
+  }
 
   if (cedulasExistentes.includes(cedulaIngresada)) {
     throw new Error("Ya existe un registro con esa cédula.");
@@ -32,7 +36,7 @@ function guardarRegistro(datos) {
     datos.nombreCalle, datos.cancelaCondominio,
     datos.nombrePagador, datos.apellidoPagador,
     datos.numeroCedulaPagador, datos.numeroTelefonoPagador,
-    datos.tieneWhatsappPagador,datos.correoElectronicoPagador, 
+    datos.tieneWhatsappPagador, datos.emailPagador, 
   ];
 
   sheet.appendRow(newRow);
@@ -199,7 +203,7 @@ function accionCombinada() {
   const libro = SpreadsheetApp.getActiveSpreadsheet();
   const hojaBanco = libro.getSheetByName("MovimientosBanco"), hojaData = libro.getSheetByName("Data");
 
-  if (hojaBanco.getRange("F1").getValue() && hojaBanco.getRange("F1").setValue(false)) {
+  if (hojaBanco.getRange("J1").getValue() && hojaBanco.getRange("J1").setValue(false)) {
     return SpreadsheetApp.getUi().showModalDialog(
       HtmlService.createHtmlOutputFromFile('UploadForm').setWidth(400).setHeight(300),
       'Moviemientos Bancarios');}
