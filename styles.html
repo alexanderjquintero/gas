@@ -1,0 +1,194 @@
+<style>/* === VARIABLES DE TEMA === */
+:root {
+  --bg-color: #ffffff;
+  --text-color: #000000;
+  --card-bg: #ffffff;
+  --card-text: #000000;
+  --input-bg: #ffffff;
+  --input-text: #000000;
+  --border-color: #ced4da;
+  --button-bg: #0d6efd;
+  --bs-primary: #007bff;
+  --button-text: #ffffff;
+  --text-color-rgb: 0, 0, 0;
+}
+
+[data-theme="dark"] {
+  --bg-color: #2a2e31;
+  --bs-body-bg: #3b4044;
+  --text-color: #f5f5f5;
+  --card-bg: #3b4044;
+  --card-text: #f5f5f5;
+  --input-bg: #3b4044;
+  --input-text: #f5f5f5;
+  --border-color: #4f565c;
+  --button-bg: #0a58ca;
+  --button-text: #ffffff;
+  --text-color-rgb: 245, 245, 245;
+}
+
+/* === ESTILOS GENERALES === */
+body {
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  transition: background-color 0.3s, color 0.3s;
+}
+
+/* === Selector de fecha y hora (modo claro/oscuro) === */
+input[type="date"]::-webkit-calendar-picker-indicator,
+input[type="time"]::-webkit-calendar-picker-indicator {
+  filter: invert(0%);
+  transition: filter 0.3s ease;
+}
+
+/* Cambiar ícono en modo oscuro */
+[data-theme="dark"] input[type="date"]::-webkit-calendar-picker-indicator,
+[data-theme="dark"] input[type="time"]::-webkit-calendar-picker-indicator {
+  filter: invert(100%);
+}
+
+/* === TARJETAS === */
+.card {
+  background-color: var(--card-bg);
+  color: var(--card-text);
+  border: none;
+  box-shadow: 0 4px 16px rgba(var(--text-color-rgb), 0.15);
+  border-radius: 1rem;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+/* === CAMPOS DE FORMULARIO === */
+.form-control,
+.form-select {
+  background-color: var(--input-bg);
+  color: var(--input-text);
+  border: 1px solid var(--border-color);
+}
+
+
+.form-control:focus,
+.form-select:focus {
+  border-color: var(--button-bg);
+  box-shadow: 0 0 0 0.2rem rgba(var(--text-color-rgb), 0.25);
+  background-color: var(--input-bg);
+  color: var(--input-text);
+}
+
+/* === ETIQUETAS flotantes === */
+.form-floating > label {
+  color: var(--text-color);
+}
+
+
+/* === TOGGLE DE TEMA === */
+.theme-toggle {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  z-index: 1050;
+}
+
+#toggle-theme {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: var(--text-color);
+  cursor: pointer;
+  transition: color 0.3s;
+}
+
+/* === IMAGEN DE PREVISUALIZACIÓN === */
+#imagePreview {
+  max-width: 600px;
+  margin-top: 1rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 0 15px rgba(var(--text-color-rgb), 0.1);
+}
+
+/* === MODAL === */
+.modal-content {
+  background-color: var(--card-bg);
+  color: var(--card-text);
+  border-radius: 1rem;
+}
+
+.modal-header.bg-success {
+  border-bottom: none;
+}
+
+
+/* Fieldset y legend */
+fieldset {
+  border: 1px solid var(--border-color) !important;
+  padding: 1rem;
+  border-radius: 0.375rem;
+  transition: border-color 0.3s ease;
+}
+.border {
+  border: 1px solid var(--border-color) !important;
+}
+legend {
+  color: var(--text-color);
+}
+
+
+/*  datos pagos */
+
+.nav-link {
+  color :var(--card-text);
+}
+
+.tab-content.tab-content-box {
+  margin : 0 300px;
+}
+
+
+.tooltip-inner {
+  color: var(--bs-white); /* Cambia el color del texto a blanco de Bootstrap */
+}
+
+.QR {
+    padding: 25px;
+}
+
+/* comentarios */
+
+.form-floating>textarea:focus~label::after, .form-floating>textarea:not(:placeholder-shown)~label::after {
+  background-color: var(--bs-body-bg);
+}
+
+
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+    }
+input[type=number] { -moz-appearance:textfield; }
+
+
+    body {
+      padding: 2rem;
+    }
+    .recibo-box {
+      max-width: 800px;
+      margin: auto;
+      padding: 2rem;
+      background: #fff;
+    }
+    .qr {
+      width: 100px;
+      height: 100px;
+    }
+    #logo{
+      width: 180px;
+      height: 180px;
+    }
+    tr {
+    height: 41px;
+    }
+    @media print {
+      .no-print {
+        display: none !important;
+      }
+    }
+</style>

@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Información Importante</title>
+  <style>
+    * {
+      margin: auto;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Open Sans', sans-serif;
+      background-color: #ecf0f1;
+      color: #000;
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      background-color: #fff;
+      overflow: hidden;
+      border-radius: 8px;
+    }
+
+    .header {
+      text-align: center;
+      padding: 40px 10px 25px;
+      border-bottom: 1px solid #ddd;
+    }
+
+    .header h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 32px;
+      font-weight: 700;
+      color: #333;
+    }
+
+    .image-container img {
+      width: 100%;
+      height: auto;
+      border-radius: 8px 8px 0 0;
+    }
+
+    .content {
+      padding: 20px 30px;
+      color: #333;
+    }
+
+    .content p {
+      margin-bottom: 10px;
+      font-size:18px;
+    }
+
+    .qr-section {
+      display: flex;
+      justify-content: center;
+      padding: 20px 0;
+    }
+
+    .qr-section img {
+      max-width: 180px;
+      height: auto;
+    }
+
+    .footer {
+      background-color: #000;
+      color: #95a5a6;
+      text-align: center;
+      padding: 20px;
+      border-radius: 0 0 8px 8px;
+    }
+
+    .footer p {
+      margin: 10px 0;
+    }
+
+    .social-icons img {
+      width: 32px;
+      height: 32px;
+      margin: 0 5px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <!-- Header Section -->
+    <div class="header">
+      <h1><?= titulo ?></h1>
+    </div>
+
+    <!-- Image Section -->
+    <div class="image-container">
+      <img src="<?= imagenPersonalizada ?>" alt="Header Image">
+    </div>
+
+    <!-- Content Section -->
+    <div class="content">
+      <p><strong>Hola <?= firstName ?> <?= lastName ?></strong></p>
+      <p id="Mensaje" style="text-align: justify;"><?= mensaje ?></p>
+      <p id="Mensaje2" style="text-align: justify;"><?= mensaje2 ?></p>
+      <p><strong>Administración.</strong></p>
+      <p><strong>Equipo de soporte.</strong></p>
+    </div>
+
+    <!-- QR Code Section -->
+    <table class="qr-section" role="presentation" style="width: 100%; height: 200px; background-color: #ffffff; border-spacing: 0; text-align: center;">
+      <tr>
+        <td style="vertical-align: middle; text-align: center;">
+          <a href="https://script.google.com/macros/s/AKfycbz1RVSK5P-502SdouyjemJKtm6UC2oeoC6cGMMPXtS4nw7Y6949cnolgYa9G5pzTXDz/exec?page=Comentarios" title="WhatsApp">
+            <img src="https://quickchart.io/qr?text=https://script.google.com/macros/s/AKfycbz1RVSK5P-502SdouyjemJKtm6UC2oeoC6cGMMPXtS4nw7Y6949cnolgYa9G5pzTXDz/exec?page=Comentarios" alt="QR Code" style="max-width: 180px; height: auto; display: inline-block;">
+          </a>
+        </td>
+      </tr>
+    </table>
+
+    <!-- Footer Section -->
+    <div class="footer">
+      <div class="social-icons">
+        <a href="#" title="WhatsApp">
+          <img src="https://cdn.tools.unlayer.com/social/icons/rounded/whatsapp.png" alt="WhatsApp">
+        </a>
+      </div>
+      <p>¡Gracias por tu pago! 🎉</p>
+    </div>
+  </div>
+</body>
+
+</html>

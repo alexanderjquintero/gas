@@ -1,0 +1,108 @@
+<html lang="es">
+
+<head>
+  <base target="_top">
+  <meta charset="UTF-8">
+  <title>Recibo de Pago</title>
+  <!-- Bootstrap 5.3 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+  <?!= include('styles'); ?>
+
+</head>
+
+<body>
+  <div class="theme-toggle no-print ">
+    <button id="toggle-theme" aria-label="Toggle theme">
+      <span id="theme-icon">🌞</span>
+    </button>
+  </div>
+
+  <div class="container my-5 ">
+    <div class="card p-4">
+
+      <div class="row mb-4 print-container">
+        <div class="col-md-6 text-center no-print ">
+          <img src="https://drive.google.com/thumbnail?sz=w500&id=1prfzE2760WH6XZ9kG4k0VO5CdxJKiLNo" alt="Encabezado"
+            class="img-fluid no-print " style="max-width: 200px; filter: drop-shadow(0px 0px 13px #ffffff)">
+        </div>
+        <div class="col-md-6 d-flex align-items-center justify-content-center text-center no-print ">
+          <h3 class="fw-bold mb-0 no-print ">ASOCIACIÓN DE PROPIETARIOS Y VECINOS DE LA URBANIZACIÓN<br>SANTA FE III ETAPA</h3>
+        </div>
+
+
+        <h1 class="h4 text-center no-print receipt-title mb-5">Recibo de Pago</h1>
+
+
+
+        <div id="formulario" class="no-print text-center">
+          <form onsubmit="buscar(); return false;" class="form-inline-custom d-inline-block">
+
+            <!-- Aquí comienza el contenedor para Floating Labels -->
+            <div class="form-floating d-inline-block me-2">
+              <!-- Usamos d-inline-block para que se muestre en línea con el botón -->
+              <input type="number" id="identificador" class="form-control d-inline-block" placeholder="Número de Identificación" required>
+              <label for="identificador">Número de Identificación</label> <!-- Añadimos la etiqueta -->
+              <button type="submit" class="btn btn-primary btn-lg mb-2 d-inline-block">Buscar</button>
+            </div>
+            <!-- Aquí termina el contenedor para Floating Labels -->
+
+
+          </form>
+        </div>
+
+        <!-- Resultado -->
+        <div id="resultado" class="centered-content">
+          <!-- Aquí se inserta el contenido dinámico -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function buscar() {
+      const id = document.getElementById('identificador').value.trim();
+      if (!id) return;
+
+      document.getElementById('resultado').innerHTML = '<div class="text-muted text-center my-3">Buscando recibo de pago...</div>';
+      google.script.run.withSuccessHandler(function (respuesta) {
+        if (respuesta.includes("No se encontraron datos")) {
+          document.getElementById('resultado').innerHTML = '<div class="alert alert-warning text-center">' + respuesta + '</div>';
+        } else {
+          document.getElementById('formulario').style.display = 'none';
+          document.getElementById('resultado').innerHTML = respuesta;
+        }
+      }).buscarPropietario(id);
+    }
+
+    function regresar() {
+      document.getElementById('resultado').innerHTML = '';
+      document.getElementById('formulario').style.display = 'block';
+      document.getElementById('identificador').value = '';
+    }
+
+    // Script para el modo oscuro
+    const toggleButton = document.getElementById('toggle-theme');
+    const currentTheme = localStorage.getItem('theme');
+    const themeIcon = document.getElementById('theme-icon');
+
+    if (currentTheme) {
+      document.documentElement.setAttribute('data-theme', currentTheme);
+      if (currentTheme === 'dark') {
+        themeIcon.textContent = '🌙';
+      }
+    }
+
+    toggleButton.addEventListener('click', () => {
+      let theme = 'light';
+      if (document.documentElement.getAttribute('data-theme') === 'light' || !document.documentElement.hasAttribute('data-theme')) {
+        theme = 'dark';
+      }
+      document.documentElement.setAttribute('data-theme', theme);
+      localStorage.setItem('theme', theme);
+      themeIcon.textContent = theme === 'dark' ? '🌙' : '🌞';
+    });
+  </script>
+</body>
+
+</html>

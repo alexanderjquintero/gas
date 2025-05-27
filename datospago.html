@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <base target="_top">
+  <meta charset="UTF-8">
+  <title>Datos Bancarios</title>
+  <!-- Bootstrap 5.3 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+  <link rel="stylesheet" href="/styles.css">
+
+</head>
+
+<body>
+
+
+  <div class="theme-toggle">
+    <button id="toggle-theme" aria-label="Toggle theme">
+      <span id="theme-icon">🌞</span>
+    </button>
+  </div>
+  <div class="container my-5">
+    <div class="card p-4">
+      <form id="comentariosForm" class="row g-3 needs-validation" novalidate>
+        <div class="row mb-4">
+          <div class="col-md-6 text-center">
+            <img src="https://drive.google.com/thumbnail?sz=w500&id=1prfzE2760WH6XZ9kG4k0VO5CdxJKiLNo" alt="Encabezado"
+              class="img-fluid" style="max-width: 200px; filter: drop-shadow(0px 0px 13px #ffffff)">
+          </div>
+          <div class="col-md-6 d-flex align-items-center justify-content-center text-center">
+            <h3 class="fw-bold mb-0">ASOCIACIÓN DE PROPIETARIOS Y VECINOS DE LA URBANIZACIÓN<br>SANTA FE III ETAPA</h3>
+          </div>
+        </div>
+
+        <h1 class="h4 text-center receipt-title mb-5">Datos Bancarios</h1>
+
+        <div class="row g-3">
+
+
+
+
+          <div class="container">
+            <ul class="nav nav-tabs justify-content-center mb-4" id="tabs" role="tablist">
+              <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="movil-tab" data-bs-toggle="tab" data-bs-target="#movil"
+                  type="button" role="tab">Pago Móvil</button>
+              </li>
+              <li class="nav-item" role="presentation">
+                <button class="nav-link" id="cuenta-tab" data-bs-toggle="tab" data-bs-target="#cuenta" type="button"
+                  role="tab">Cuenta Bancaria</button>
+              </li>
+            </ul>
+
+            <div class="tab-content tab-content-box" id="tabContent">
+              <!-- Pago Móvil -->
+              <div class="tab-pane fade show active" id="movil" role="tabpanel">
+
+                <!-- Inicia la fila para las dos columnas -->
+                <div class="row">
+
+                  <!-- Columna izquierda para la información (ocupa 4 de 12 columnas en md y arriba) -->
+                  <div class="col-md-6">
+                    <div class="mb-3">
+                      <label class="form-label fw-bold">RIF:</label>
+                      <div class="d-flex align-items-center gap-2">
+                        <span data-copy-value="296137374" id="rif">J-29613737-4</span>
+                        <div class="copy-container">
+                          <button class="btn btn-outline-primary btn-sm" id="copyRif">
+                            <i class="bi bi-copy"></i>
+                          </button>
+                          <div class="copied-tooltip" id="msgRif" data-bs-toggle="tooltip" data-bs-placement="right"
+                            title="Copiado"></div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="mb-3">
+                      <label class="form-label fw-bold">Teléfono:</label>
+                      <div class="d-flex align-items-center gap-2">
+                        <span data-copy-value="04246790741" id="telefono1">0424-6790741</span>
+                        <div class="copy-container">
+                          <button class="btn btn-outline-primary btn-sm" id="copyTelefono1">
+                            <i class="bi bi-copy"></i>
+                          </button>
+                          <div class="copied-tooltip" id="msgTelefono1" data-bs-toggle="tooltip"
+                            data-bs-placement="right" title="Copiado"></div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="mb-3">
+                      <label class="form-label fw-bold">Banco:</label>
+                      <div class="d-flex align-items-center gap-2">
+                        <span data-copy-value="0151" id="banco1">FONDO COMUN</span>
+                        <div class="copy-container">
+                          <button class="btn btn-outline-primary btn-sm" id="copyBanco1">
+                            <i class="bi bi-copy"></i>
+                          </button>
+                          <div class="copied-tooltip" id="msgBanco1" data-bs-toggle="tooltip" data-bs-placement="right"
+                            title="Copiado"></div>
+                        </div>
+                      </div>
+                    </div>
+
+                  </div>
+                  <!-- Fin de la columna izquierda -->
+
+                  <!-- Columna derecha para la imagen (ocupa 8 de 12 columnas en md y arriba) -->
+                  <div class="col-md-5">
+                    <img src="https://placehold.co/200?text=QR&font=roboto"
+                      class="img-fluid QR" alt="Imagen de Pago Móvil">
+                  </div>
+                  <!-- Fin de la columna derecha -->
+
+                </div>
+                <!-- Fin de la fila -->
+
+              </div>
+
+
+              <!-- Cuenta Bancaria -->
+              <div class="tab-pane fade" id="cuenta" role="tabpanel">
+
+                <div class="mb-3">
+                  <label class="form-label fw-bold">RIF:</label>
+                  <div class="d-flex align-items-center gap-2">
+                    <span data-copy-value="296137374" id="rif1">J-296137374</span>
+                    <div class="copy-container">
+                      <button class="btn btn-outline-primary btn-sm" id="copyRif1">
+                        <i class="bi bi-copy"></i>
+                      </button>
+                      <div class="copied-tooltip" id="msgRif1" data-bs-toggle="tooltip" data-bs-placement="right"
+                        title="Copiado"></div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="mb-3">
+                  <label class="form-label fw-bold">Cuenta:</label>
+                  <div class="d-flex align-items-center gap-2">
+                    <span data-copy-value="01510198961001351431" id="cuenta2">0151-0198-96-1001351431</span>
+                    <div class="copy-container">
+                      <button class="btn btn-outline-primary btn-sm" id="copyCuenta2">
+                        <i class="bi bi-copy"></i>
+                      </button>
+                      <div class="copied-tooltip" id="msgCuenta2" data-bs-toggle="tooltip" data-bs-placement="right"
+                        title="Copiado"></div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="mb-3">
+                  <label class="form-label fw-bold">Correo:</label>
+                  <div class="d-flex align-items-center gap-2">
+                    <span data-copy-value="urbanizacion.santafeiii@gmail.com"
+                      id="correo2">urbanizacion.santafeiii@gmail.com</span>
+                    <div class="copy-container">
+                      <button class="btn btn-outline-primary btn-sm" id="copyCorreo2">
+                        <i class="bi bi-copy"></i>
+                      </button>
+                      <div class="copied-tooltip" id="msgCorreo2" data-bs-toggle="tooltip" data-bs-placement="right"
+                        title="Copiado"></div>
+                    </div>
+                  </div>
+                </div>
+
+
+              </div>
+            </div>
+
+            <!-- Mensaje común al pie -->
+            <div class="text-center mt-4">
+              <p class="fw-bold">SIGAMOS GESTIONANDO JUNTOS<br>EL BUEN VIVIR</p>
+            </div>
+          </div>
+
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+      const toggleBtn = document.getElementById('toggle-theme');
+      const icon = document.getElementById('theme-icon');
+
+      // Cargar preferencia guardada
+      const savedTheme = localStorage.getItem('theme');
+      if (savedTheme === 'dark') {
+        document.documentElement.setAttribute('data-theme', 'dark');
+        icon.textContent = '🌙';
+      }
+
+      toggleBtn.addEventListener('click', () => {
+        const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+        if (isDark) {
+          document.documentElement.setAttribute('data-theme', 'light');
+          localStorage.setItem('theme', 'light');
+          icon.textContent = '🌞';
+        } else {
+          document.documentElement.setAttribute('data-theme', 'dark');
+          localStorage.setItem('theme', 'dark');
+          icon.textContent = '🌙';
+        }
+      });
+
+/* tooltips  */
+      function copiarTexto(botonId, textoId, tooltipId) {
+    document.getElementById(botonId).addEventListener('click', (event) => { // Añade 'event' como parámetro
+        event.preventDefault(); // Evita el comportamiento por defecto del evento
+
+        const texto = document.getElementById(textoId).textContent;
+        navigator.clipboard.writeText(texto)
+            .then(() => {
+                // Texto copiado exitosamente. Ahora activamos el tooltip.
+                const tooltipElement = document.getElementById(tooltipId);
+                if (tooltipElement) {
+                    const tooltip = bootstrap.Tooltip.getInstance(tooltipElement);
+                    if (tooltip) {
+                        tooltip.show();
+                        setTimeout(() => tooltip.hide(), 2000);
+                    } else {
+                        const newTooltip = new bootstrap.Tooltip(tooltipElement);
+                        newTooltip.show();
+                         setTimeout(() => newTooltip.hide(), 2000);
+                    }
+                }
+                console.log('Texto copiado y tooltip mostrado para: ' + texto);
+            })
+            .catch(err => console.error('Error copiando texto:', err));
+    });
+}
+
+// Llama a la función con los IDs del botón, el texto a copiar y el tooltip
+copiarTexto('copyRif', 'rif', 'msgRif');
+copiarTexto('copyRif1', 'rif1', 'msgRif1');
+copiarTexto('copyBanco1', 'banco1', 'msgBanco1');
+copiarTexto('copyTelefono1', 'telefono1', 'msgTelefono1');
+copiarTexto('copyCorreo2', 'correo2', 'msgCorreo2');
+copiarTexto('copyCuenta2', 'cuenta2', 'msgCuenta2');
+
+    </script>
+</body>
+
+</html>

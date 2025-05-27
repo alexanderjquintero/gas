@@ -1,0 +1,103 @@
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+    function preventFormSubmit() {
+        var forms = document.querySelectorAll('form');
+        for (var i = 0; i < forms.length; i++) {
+          forms[i].addEventListener('submit', function(event) {
+            event.preventDefault();
+          });
+        }
+      }
+  window.addEventListener('load', preventFormSubmit);
+
+  function handleFormSubmit(formObject){
+    google.script.run.withSuccessHandler(updateUrl).withFailureHandler(onFailure).uploadFiles(formObject);
+  }
+
+function updateUrl(url) {
+    if(isValidURL(url)){
+      document.getElementById("myForm").reset();
+      document.getElementById('formFileLg').value = "";
+      document.getElementById('imagePreview').src = "https://drive.google.com/thumbnail?sz=w500&id=1bG9Ih9hhr9TrvpjGu8TVtNN4evdBrigB";
+      // Actualizar el enlace dentro del modal
+      document.getElementById('successUrl').href = url;
+      // Mostrar el modal de éxito
+      var successModal = new bootstrap.Modal(document.getElementById('successModal'));
+      successModal.show();
+    }else{
+      var div = document.getElementById('output');
+      // Show warning message if file is not uploaded or provided
+      div.innerHTML = '<div class="alert alert-danger" role="alert">'+ URL +'!</div>';
+    }
+  }
+
+  function onFailure(error) {
+    var div = document.getElementById('output');
+    div.innerHTML = '<div class="alert alert-danger" role="alert">'+ error.message +'!</div>';
+  }
+
+  function isValidURL(string) {
+    var res = string.match(/(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/g);
+    return (res !== null);
+  }
+  
+  function validateForm() {
+    var requiredFields = document.querySelectorAll('.required-field');
+    var isValid = true;
+    requiredFields.forEach(function(field) {
+      if (!field.value) {
+        isValid = false;
+      }
+    });
+    document.getElementById('submitBtn').disabled = !isValid;
+  }
+
+  window.addEventListener('load', function() {
+    validateForm();
+    var requiredFields = document.querySelectorAll('.required-field');
+    requiredFields.forEach(function(field) {
+      field.addEventListener('input', validateForm);
+    });
+  });
+
+function previewImage() {
+    const file = document.getElementById('formFileLg').files[0];
+    const preview = document.getElementById('imagePreview');
+    const reader = new FileReader();
+
+    reader.addEventListener('load', function () {
+        preview.src = reader.result;
+    }, false);
+
+    if (file) {
+        reader.readAsDataURL(file);
+    } else {
+        // Opcional: Si el usuario borra la selección, puedes volver a mostrar la imagen por defecto.
+        preview.src = "https://drive.google.com/thumbnail?sz=w500&id=1bG9Ih9hhr9TrvpjGu8TVtNN4evdBrigB";
+    }
+}
+
+(function ($) {
+  function floatLabel(inputType) {
+    $(inputType).each(function () {
+      var $this = $(this);
+      // on focus add cladd active to label
+      $this.focus(function () {
+        $this.next().addClass("active");
+      });
+      //on blur check field and remove class if needed
+      $this.blur(function () {
+        if ($this.val() === "" || $this.val() === "blank") {
+          $this.next().removeClass();
+        }
+      });
+    });
+  }
+  // just add a class of "floatLabel to the input field!"
+  floatLabel(".floatLabel");
+})(jQuery);
+
+
+</script>

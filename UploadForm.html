@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+    <style>
+      /* Estilo general para centrar el contenido */
+      body {
+        font-family: Arial, sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+        background: linear-gradient(135deg, #f0f4f8, #d9e6f2);
+      }
+
+      /* Contenedor principal con sombra */
+      .container {
+        background: #ffffff;
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        padding: 20px 30px;
+        max-width: 400px;
+        text-align: center;
+        /* Añadido: Posición relativa para mensajes absolutos si es necesario */
+        position: relative; 
+      }
+
+      /* Estilo del título */
+      h3 {
+        margin-top: 0;
+        color: #3a3a3a;
+      }
+
+      /* Estilo del input */
+      input[type="file"] {
+        margin: 15px 0;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 14px;
+        cursor: pointer;
+        width: 100%;
+      }
+
+      /* Estilo del botón */
+      button {
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        padding: 12px 20px;
+        font-size: 16px;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        width: 100%;
+      }
+
+      button:hover {
+        background-color: #45a049;
+      }
+
+      /* Estilo para mensajes */
+      .info {
+        font-size: 14px;
+        color: #555;
+        margin-top: 10px;
+      }
+
+      /* Estilo para el área de mensajes */
+      #messageArea {
+        margin-top: 20px;
+        padding: 10px;
+        border-radius: 5px;
+        min-height: 1.2em; /* Para reservar espacio */
+      }
+
+      .message-success {
+        background-color: #d4edda;
+        color: #155724;
+        border: 1px solid #c3e6cb;
+      }
+
+      .message-error {
+        background-color: #f8d7da;
+        color: #721c24;
+        border: 1px solid #f5c6cb;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h3>Cargar Archivo TXT Bancario</h3>
+      <input type="file" id="fileInput" accept=".txt" />
+      <button id="uploadButton" onclick="uploadTxtFile()">Cargar Movimientos Bancarios</button>
+      <p class="info">Seleccione un archivo para cargar los movimientos actuales.</p>
+      
+      <div id="messageArea"></div>
+
+    </div>
+    <script>
+      const fileInput = document.getElementById('fileInput');
+      const uploadButton = document.getElementById('uploadButton');
+      const messageArea = document.getElementById('messageArea');
+
+      // Función que se ejecuta cuando el archivo se sube con éxito
+      function onUploadSuccess(message) {
+        messageArea.className = 'message-success'; // Aplica estilo de éxito
+        messageArea.innerText = message || 'Archivo cargado con éxito.'; // Muestra el mensaje
+        
+        // Espera 3 segundos y luego cierra el modal
+        setTimeout(function() {
+          google.script.host.close();
+        }, 3000); // 3000 milisegundos = 3 segundos
+      }
+
+      // Función que se ejecuta si hay un error en la subida
+      function onUploadFailure(error) {
+        messageArea.className = 'message-error'; // Aplica estilo de error
+        messageArea.innerText = 'Error al cargar el archivo: ' + error; // Muestra el error
+        // Opcional: podrías cerrar después de un retraso o dejarlo abierto para que el usuario vea el error
+      }
+
+      function uploadTxtFile() {
+        const file = fileInput.files[0];
+        
+        if (!file) {
+          messageArea.className = 'message-error';
+          messageArea.innerText = 'Por favor, seleccione un archivo.';
+          return; // Salir si no hay archivo
+        }
+
+        // Deshabilitar input y botón durante la carga
+        fileInput.disabled = true;
+        uploadButton.disabled = true;
+        uploadButton.innerText = 'Cargando...';
+        messageArea.className = ''; // Limpiar clases de mensaje anterior
+        messageArea.innerText = 'Procesando archivo...'; // Mensaje de estado
+
+        const reader = new FileReader();
+        
+        reader.onload = function(e) {
+          const fileContent = e.target.result;
+          // Llama a la función de Apps Script con handlers de éxito y error
+          google.script.run
+            .withSuccessHandler(onUploadSuccess)
+            .withFailureHandler(onUploadFailure)
+            .dataBanco(fileContent); // Llama a tu función Apps Script
+        };
+        
+        reader.onerror = function() {
+           onUploadFailure('No se pudo leer el archivo.');
+           fileInput.disabled = false;
+           uploadButton.disabled = false;
+           uploadButton.innerText = 'Cargar Archivo';
+        };
+
+        reader.readAsText(file); // Lee el archivo como texto
+      }
+    </script>
+  </body>
+</html>
