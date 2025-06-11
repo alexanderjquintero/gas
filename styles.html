@@ -6,6 +6,7 @@
     --bs-table-bg: #ececec;
     --card-bg: #ffffff;
     --card-text: #000000;
+    --card-color-light: #212529;
     --input-bg: #ffffff;
     --input-text: #000000;
     --border-color: #ced4da;
@@ -23,6 +24,7 @@
     --text-color: #f5f5f5;
     --card-bg: #3b4044;
     --card-text: #f5f5f5;
+    --card-color-dark: #f8f9fa;
     --input-bg: #3b4044;
     --input-text: #f5f5f5;
     --border-color: #4f565c;
@@ -30,6 +32,8 @@
     --button-text: #ffffff;
     --text-color-rgb: 245, 245, 245;
     --accent-bg: #495057; 
+
+
   }
 
   /* === ESTILOS GENERALES === */
@@ -38,6 +42,11 @@
     color: var(--text-color);
     transition: background-color 0.3s, color 0.3s;
   }
+
+.list-group-item {
+      background-color: var(--card-bg);
+      color: var(--card-color);
+    }
 
   /* === Selector de fecha y hora (modo claro/oscuro) === */
   input[type="date"]::-webkit-calendar-picker-indicator,
@@ -242,6 +251,7 @@ thead, tfoot {
   background-color: var(--accent-bg) !important;
   color: var(--text-color) !important;
 }
+
 
   @media print {
     .no-print {

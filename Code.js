@@ -1,16 +1,16 @@
 var folderID = "1PSauhY-tcXcqkJXW4qK1MMBwFz-gFr9F"; //Replace the "root" with folder ID to upload files to a specific folder
 var sheetName = "Data"; //Replace the "Data" with your data sheet name
 
-//listo
+//Numero 01 listo 
 function doGet(e) {
   var page = (e.parameter.page || "index").toLowerCase();
-  var allowedPagesString = "comentarios,buscarecibo,datospago,index,ocupacion"; // Agregar "ocupacion" a la lista
+  var allowedPagesString = "comentarios,buscarecibo,datospago,deuda,index,ocupacion"; // Agregar "ocupacion" a la lista
   var allowedPages = allowedPagesString.split(",");
   var filename = (allowedPages.indexOf(page) !== -1) ? page : "index";
   return HtmlService.createTemplateFromFile(filename).evaluate();
 }
 
-//listo
+//Numero 02 listo 
 function guardarRegistro(datos) {
   const ss = SpreadsheetApp.getActiveSpreadsheet();
   const sheet = ss.getSheetByName("ocupacion");
@@ -30,33 +30,30 @@ function guardarRegistro(datos) {
 
   const newRow = [
     datos.numeroCedula, datos.nombre, datos.apellido,
-    datos.tipoOcupacion, datos.numeroTelefono,
-    datos.tieneWhatsapp,
-    datos.correoElectronico, datos.numeroCasa,
-    datos.nombreCalle, datos.cancelaCondominio,
-    datos.nombrePagador, datos.apellidoPagador,
-    datos.numeroCedulaPagador, datos.numeroTelefonoPagador,
-    datos.tieneWhatsappPagador, datos.emailPagador, 
+    datos.tipoOcupacion, datos.numeroTelefono, datos.tieneWhatsapp, datos.correoElectronico, 
+    datos.numeroCasa, datos.nombreCalle, datos.cancelaCondominio, datos.tieneVehiculo,
+    datos.modeloVehiculo,datos.placaVehiculo,datos.colorVehiculo,
+    datos.nombrePagador, datos.apellidoPagador, datos.numeroCedulaPagador,
+ datos.numeroTelefonoPagador, datos.tieneWhatsappPagador,datos.emailPagador
   ];
 
   sheet.appendRow(newRow);
   return "Datos guardados correctamente.";
 }
 
-
-
-//listo
+//Numero 03 listo 
 function registrarComentario(data) {
   const hoja = SpreadsheetApp.getActive().getSheetByName('comentarios');
   const fila = [data.nombre || '', data.apellido || '', data.cedula || '', data.telefono || '', data.correo || '', data.comentario || '', new Date()];
   hoja.appendRow(fila);
 }
 
+//Numero 04 listo 
 function include(filename) {
   return HtmlService.createHtmlOutputFromFile(filename).getContent();
 }
 
-//listo
+//Numero 05 listo 
 function generarYGuardarPDF() {
   var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Data");
   var data = sheet.getDataRange().getValues();
@@ -73,23 +70,36 @@ function generarYGuardarPDF() {
       pdfContent.phone = row[7];
       pdfContent.ref = row[11];
       pdfContent.dateOfPey = row[8];
-      pdfContent.type = row[9];
-      pdfContent.monto = row[10];
-      pdfContent.orden = row[0];
-      pdfContent.emailSentTime = Utilities.formatDate(new Date(), "America/Caracas", "dd/MM/yyyy hh:mm a");
-      pdfContent.showQRCode = false;
-
-      var pdfBlob = Utilities.newBlob(pdfContent.evaluate().getContent(), 'text/html')
-        .getAs('application/pdf')
-        .setName("Recibo_Pago_" + row[1] + "_" + row[2] + "_" + row[0] + ".pdf");
-
-      var pdfFile = pdfFolder.createFile(pdfBlob);
-      pdfFile.setSharing(DriveApp.Access.ANYONE, DriveApp.Permission.VIEW);
-      sheet.getRange(i + 1, 19).setValue(pdfFile.getUrl()); // Columna s
+      plantillaPDF.type = row[9];
+      plantillaPDF.monto = row[10];
+      plantillaPDF.orden = ordenId;
+      plantillaPDF.showQRCode = false;
+      plantillaPDF.oriPdf = false;
+      plantillaPDF.emailSentTime = Utilities.formatDate(new Date(), "America/Caracas", "dd/MM/yyyy hh:mm a");
+      var contenidoPDFHtml = plantillaPDF.evaluate().getContent();
+      var archivoPDF = Utilities.newBlob(contenidoPDFHtml, 'text/html').getAs('application/pdf').setName(nombreArchivoPDF);
+      try {
+        MailApp.sendEmail({
+          to: emailDestino,
+          subject: asunto,
+          htmlBody: cuerpoEmail,
+          attachments: [archivoPDF]
+        });
+        datos[i][17] = fechaHoraEnvio;
+        algunCorreoEnviado = true;
+      } catch (e) {
+      }
     }
+  }
+  if (algunCorreoEnviado) {
+    var columnaQValores = datos.map(function (fila) {
+      return [fila[17]];
+    });
+    hoja.getRange(1, 18, datos.length, 1).setValues(columnaQValores);
   }
 }
 
+//Numero 06 listo
 function getNextId() {
   var ss = SpreadsheetApp.getActiveSpreadsheet();
   var sheet = ss.getSheetByName(sheetName);
@@ -107,8 +117,7 @@ function getNextId() {
   return maxId + 1;
 }
 
-
-//Esta funcion es la que envia la informacion de formulario a sheet
+//Numero 07 listo
 function uploadFiles(formObject) {
   try {
     var folder = DriveApp.getFolderById(folderID);
@@ -173,7 +182,7 @@ function uploadFiles(formObject) {
   }
 }
 
-
+//Numero 08 listo
 function buscarOcupantePoridC(idC) {
   const hoja = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('ocupacion');
   const datos = hoja.getDataRange().getValues();
@@ -197,8 +206,7 @@ function buscarOcupantePoridC(idC) {
   return { encontrado: false };
 }
 
-
-//listo
+//Numero 09 listo
 function accionCombinada() {
   const libro = SpreadsheetApp.getActiveSpreadsheet();
   const hojaBanco = libro.getSheetByName("MovimientosBanco"), hojaData = libro.getSheetByName("Data");
@@ -210,7 +218,139 @@ function accionCombinada() {
   if (hojaData.getRange("Q2").getValue() && hojaData.getRange("Q2").setValue(false)) sendEmails();
 }
 
-//listo
+//Numero 10 listo
+function getDeudaByCedula(cedulaBuscada) {
+  try {
+    const ss = SpreadsheetApp.getActiveSpreadsheet();
+    const hojaConsolidado = ss.getSheetByName('consolidado');
+    const hojaTasas = ss.getSheetByName('tasas');
+
+    const tasaCambio = hojaTasas.getRange('B1').getValue();
+    Logger.log('Tasa de cambio: ' + tasaCambio);
+
+    const datos = hojaConsolidado.getDataRange().getValues();
+    Logger.log('Total filas en consolidado: ' + datos.length);
+
+    const encabezados = datos[0];
+    Logger.log('Encabezados: ' + encabezados.join(', '));
+
+    // Buscar fila con la cédula
+    let filaUsuario = null;
+    for (let i = 1; i < datos.length; i++) {
+      if (datos[i][1].toString() === cedulaBuscada) {
+        filaUsuario = datos[i];
+        Logger.log('Fila encontrada en índice ' + i + ': ' + filaUsuario.join(', '));
+        break;
+      }
+    }
+
+    if (!filaUsuario) {
+      Logger.log('No se encontró la cédula: ' + cedulaBuscada);
+      return null;
+    }
+
+    const nombre = filaUsuario[2];
+    const deudaAcumuladaUSD = parseFloat(filaUsuario[4]) || 0;
+    const plazoDias = parseInt(filaUsuario[5]) || 0;
+
+    Logger.log('Nombre: ' + nombre);
+    Logger.log('Deuda acumulada USD: ' + deudaAcumuladaUSD);
+    Logger.log('Plazo días: ' + plazoDias);
+
+    const fechaHoy = new Date();
+    const mesActualIndex = fechaHoy.getMonth(); // 0 para enero, 11 para diciembre
+    Logger.log('Mes actual (0-11): ' + mesActualIndex);
+
+    const indicePrimerMes = 6; // Columna G
+    const nombresMeses = ["ene", "feb", "mar", "abr", "may", "jun", "jul", "ago", "set", "oct", "nov", "dic"];
+    const nombresMesesLargos = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
+
+    let ultimoMesPagadoIndex = -1; // Índice del último mes que tiene algún valor no vacío
+    let allMonthsPaid = true;
+    const mesesPendientes = [];
+
+    const response = {
+      nCasa: filaUsuario[0] || '',
+      cedula: filaUsuario[1] || '',
+      nombre: filaUsuario[2] || '',
+      deuAnt: parseFloat(filaUsuario[4]) || 0,
+      plazo: parseInt(filaUsuario[5]) || 0,
+      cuoExtOrdAnual: parseFloat(filaUsuario[42]) || 0,
+      deudaAtrasadaUSD: deudaAcumuladaUSD, // Mantener para la lógica del mensaje si es necesario
+    };
+
+    for (let i = 0; i < nombresMeses.length; i++) {
+      const mesKey = nombresMeses[i];
+      const indiceBaseMes = indicePrimerMes + i * 3; // Columna inicial para el mes
+
+      const montoMes = filaUsuario[indiceBaseMes];
+      const sedematMes = filaUsuario[indiceBaseMes + 1];
+      const abonoMes = filaUsuario[indiceBaseMes + 2];
+
+      // Asignar valores al objeto de respuesta, convirtiendo a número si es posible o dejando vacío/N/A
+      response[mesKey] = (montoMes !== '' && montoMes !== null) ? parseFloat(montoMes) || 0 : '';
+      response[`${mesKey}Sedemat`] = (sedematMes !== '' && sedematMes !== null) ? parseFloat(sedematMes) || 0 : '';
+      response[`${mesKey}AdoDeu`] = (abonoMes !== '' && abonoMes !== null) ? parseFloat(abonoMes) || 0 : '';
+
+      // Determinar si el mes está "pagado" (basado en si CUALQUIERA de las tres celdas no está vacía)
+      if (montoMes !== '' || sedematMes !== '' || abonoMes !== '') {
+        ultimoMesPagadoIndex = i; // Guarda el índice del mes
+      } else if (i < mesActualIndex) {
+        allMonthsPaid = false;
+        mesesPendientes.push(nombresMesesLargos[i]);
+      }
+    }
+
+    Logger.log('Último mes con datos (pagado): ' + ultimoMesPagadoIndex);
+
+    // --- Lógica para determinar qué meses mostrar y el mensaje de pendientes ---
+
+    let mesesAMostrarHastaIndex = ultimoMesPagadoIndex; // Muestra hasta el último pagado
+    const isAnticipated = ultimoMesPagadoIndex > mesActualIndex;
+
+     let mensajeMesesPendientes = "";
+     if (allMonthsPaid && ultimoMesPagadoIndex >= 11) {
+          mensajeMesesPendientes = `Al día con los pagos hasta <span class="badge text-bg-success">Diciembre</span>`;
+    } else if (allMonthsPaid) {
+      mensajeMesesPendientes = "Al día con los pagos hasta " + nombresMesesLargos[mesActualIndex];
+         if (isAnticipated) {
+           mensajeMesesPendientes = `Al día con los pagos hasta ${nombresMesesLargos[mesActualIndex]}  <span class="badge text-bg-success">${nombresMesesLargos[ultimoMesPagadoIndex]}</span> (Pago anticipado)`;
+         }
+    } else {
+           let mesesPendientesHTML = "";
+           for (let i = 0; i < mesesPendientes.length; i++) {
+               mesesPendientesHTML += `<span class="badge text-bg-danger">${mesesPendientes[i]}</span> `; // Add badge to each pending month
+           }
+           mensajeMesesPendientes = "Meses pendientes de pago: " + mesesPendientesHTML;
+      }
+
+
+    Logger.log('Mes actual index: ' + mesActualIndex);
+    Logger.log('Último mes pagado index: ' + ultimoMesPagadoIndex);
+    Logger.log('Meses a mostrar hasta index: ' + mesesAMostrarHastaIndex);
+    Logger.log('Pago anticipado: ' + isAnticipated);
+    Logger.log('Mensaje meses pendientes ' + mensajeMesesPendientes);
+
+    // Incluir los índices, bandera y mensaje en la respuesta
+    response.mesesAMostrarHastaIndex = mesesAMostrarHastaIndex;
+    response.isAnticipated = isAnticipated;
+    response.mesActualIndex = mesActualIndex; // Asegurar que el índice del mes actual también se envía
+    response.mensajeMesesPendientes = mensajeMesesPendientes;
+
+    // Recalcular el mensaje general de deuda/solvente
+    const tieneDeudaTotal = response.deuAnt > 0 || mesesPendientes.length > 0;
+    response.mensaje = tieneDeudaTotal ? "Tiene deuda pendiente" : "Está solvente";
+
+    return response;
+
+  } catch (e) {
+    return { error: 'Error en getDeudaByCedula: ' + e.message };
+  }
+
+}
+
+
+//Numero 11 listo
 function dataBanco(content) {
   var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("MovimientosBanco");
   if (!sheet) return;
@@ -222,7 +362,7 @@ function dataBanco(content) {
   }
 }
 
-//listo
+//Numero 12 listo
 function onEdit(e) {
   if (!e) return;
 
@@ -247,7 +387,7 @@ function onEdit(e) {
   }
 }
 
-//listo
+//Numero 13 listo
 function buscarPropietario(id) {
   var hoja = SpreadsheetApp.getActive().getSheetByName("Data");
   var datos = hoja.getDataRange().getValues();
@@ -279,8 +419,7 @@ function buscarPropietario(id) {
   return '<div class="alert alert-warning" role="alert"><i class="bi bi-alarm"></i>No se encontraron datos para el Identificador ingresado o la información aún no ha sido procesada.</div>';
 }
 
-
-//listo
+//Numero 14 listo
 function sendEmails() {
   var hojaNombre = "Data";
   var hoja = SpreadsheetApp.getActive().getSheetByName(hojaNombre);
@@ -347,6 +486,7 @@ function sendEmails() {
     hoja.getRange(1, 18, datos.length, 1).setValues(columnaQValores);
   }
 }
+
 
 function registrarTasa() {
   const hoja = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Tasas");
@@ -416,4 +556,3 @@ function bloquearData() {
     }
   }
 }
-

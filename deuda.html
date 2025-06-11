@@ -1,0 +1,380 @@
+<html lang="es">
+
+<head>
+    <base target="_top">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Estado de Cuenta del Ocupante</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+    <?!= include('styles'); ?>
+</head>
+
+<body>
+    <div class="theme-toggle no-print ">
+        <button id="toggle-theme" aria-label="Toggle theme">
+            <span id="theme-icon">🌞</span>
+        </button>
+    </div>
+    <div class="container my-2 ">
+        <div class="card p-4">
+            <div class="row mb-4 print-container">
+                <div class="row mb-4 print-container" id="encabezado">
+                    <div class="col-md-6 text-center ">
+                        <img src="https://drive.google.com/thumbnail?sz=w500&id=1prfzE2760WH6XZ9kG4k0VO5CdxJKiLno"
+                            alt="Encabezado" class="img-fluid no-print" id="encabezado"
+                            style="max-width: 200px; filter: drop-shadow(0px 0px 15px #ffffff)">
+                    </div>
+                    <div class="col-md-6 d-flex align-items-center justify-content-center text-center">
+                        <h3 class="fw-bold mb-0">ASOCIACIÓN DE PROPIETARIOS Y VECINOS DE LA URBANIZACIÓN<br>SANTA FE III
+                            ETAPA</h3>
+                    </div>
+                    <h1 class="h4 text-center no-print receipt-title mb-5" id="encabezado">Estado de Cuenta del Ocupante
+                    </h1>
+                </div>
+                <div id="formulario" class="no-print text-center">
+                    <form id="formularioCedula" class="form-inline-custom d-inline-block" method="POST">
+                        <div class="form-floating d-inline-block me-2">
+                            <input type="number" id="cedula" class="form-control d-inline-block"
+                                placeholder="Número de Identificación" required>
+                            <label for="cedula">Número de Identificación</label>
+                            <button type="submit" class="btn btn-primary btn-lg mb-2 d-inline-block">Buscar</button>
+                        </div>
+                    </form>
+                </div>
+                <div id="resultado" class="centered-content d-none">
+                    <h5 class="mb-3">Resultado de la búsqueda</h5>
+                    <div id="mensaje" class="alert alert-warning"></div>
+                    <div class="row mb-3">
+                        <div class="col-12 mb-3">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h6 class="card-title">Datos Generales</h6>
+                                    <p class="card-text"><strong>N casa:</strong> <span id="r-ncasa"></span></p>
+                                    <p class="card-text"><strong>Cédula:</strong> <span id="r-cedula"></span></p>
+                                    <p class="card-text"><strong>Nombre:</strong> <span id="r-nombre"></span></p>
+                                    <p class="card-text"><strong>Deuda Anterior:</strong> <span id="r-deuAnt"></span>
+                                    </p>
+                                    <p class="card-text"><strong>Plazo:</strong> <span id="r-plazo"></span></p>
+                                    <p class="card-text"><strong>Cuota Extraordinaria Anual:</strong> <span
+                                            id="r-cuoExtOrdAnual"></span></p>
+                                     <p class="card-text"><strong>Estado de Pagos:</strong> <span id="r-meses-pendientes"></span></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Contenedor donde se cargarán los meses dinámicamente -->
+                    <div class="row" id="mesesContainer">
+                        <!-- Los cards de los meses se insertarán aquí por JavaScript -->
+                    </div>
+
+
+                    <button id="regresarBtn" class="btn btn-secondary mt-3 d-none">Regresar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Función para crear un card de mes
+        function createMonthCard(monthName, isAnticipated, isPaid) {
+            const colDiv = document.createElement('div');
+            colDiv.classList.add('col-4', 'mb-3'); // Changed to col-2
+
+            const cardDiv = document.createElement('div');
+            cardDiv.classList.add('card');
+            cardDiv.style.position = 'relative'; // Added for overlay positioning relative to the card
+            cardDiv.style.overflow = 'hidden'; // Added to clip overlay at rounded corners
+
+
+            const cardBodyDiv = document.createElement('div');
+            cardBodyDiv.classList.add('card-body');
+            // Removed position: relative and overflow: hidden from cardBodyDiv
+
+            const title = document.createElement('h6');
+            title.classList.add('card-title', 'month-title');
+            title.textContent = monthName;
+
+            if (isAnticipated) {
+                const badge = document.createElement('span');
+                badge.classList.add('badge', 'text-bg-success', 'ms-2'); // Add margin-start for spacing
+                badge.textContent = 'Pago anticipado';
+                title.appendChild(badge);
+            }
+
+            cardBodyDiv.appendChild(title);
+
+            // These spans will be populated later using setTextContentSafe or set to 'No pagado'
+            const monthPrefix = monthName.toLowerCase().substring(0, 3);
+
+            const pMain = document.createElement('p');
+            pMain.classList.add('card-text');
+            // Changed label to 'Condominio:'
+            pMain.innerHTML = `<strong>Condominio:</strong> <span id="r-${monthPrefix}"></span>`;
+            cardBodyDiv.appendChild(pMain);
+
+            const pSedemat = document.createElement('p');
+            pSedemat.classList.add('card-text');
+            pSedemat.innerHTML = `<strong>Sedemat:</strong> <span id="r-${monthPrefix}-sedemat"></span>`;
+            cardBodyDiv.appendChild(pSedemat);
+
+            const pAdoDeu = document.createElement('p');
+            pAdoDeu.classList.add('card-text');
+            pAdoDeu.innerHTML = `<strong>Abono Deuda:</strong> <span id="r-${monthPrefix}-adodeu"></span>`;
+            cardBodyDiv.appendChild(pAdoDeu);
+
+
+            cardDiv.appendChild(cardBodyDiv);
+            colDiv.appendChild(cardDiv);
+
+            // Add overlay if not paid, append to cardDiv
+            if (!isPaid) {
+                 const overlayDiv = document.createElement('div');
+                 overlayDiv.classList.add('not-paid-overlay', 'd-flex', 'flex-column', 'justify-content-center', 'align-items-center', 'text-center'); // Added flex-column
+                 
+                 const overlayText = document.createElement('div');
+                 overlayText.textContent = 'NO PAGADO';
+                 overlayText.style.marginBottom = '10px'; // Add some space between text and button
+
+                 const payButton = document.createElement('button');
+                 payButton.classList.add('btn', 'btn-primary'); // Bootstrap button classes
+                 payButton.textContent = 'Ir a Pagar';
+
+                 // *** Agrega este event listener ***
+                 payButton.addEventListener('click', function() {
+                     // Redirigir a la página index.html
+                     // Puedes usar window.location.href o window.location.replace
+                     // window.location.href = 'index.html'; // Navega a index.html, permite volver atrás
+                     window.location.replace('index.html'); // Reemplaza la página actual con index.html, no permite volver atrás con el botón de retroceso
+
+                     // Si tu aplicación web requiere una URL específica de Google Apps Script para index.html,
+                     // deberás usar esa URL completa en lugar de 'index.html'.
+                     // Ejemplo (reemplaza con tu URL real):
+                     // window.location.replace('https://script.google.com/a/macros/tudominio.com/s/ABC-XYZ/exec?page=index');
+                 });
+                 // ************************************
+
+                 overlayDiv.appendChild(overlayText);
+                 overlayDiv.appendChild(payButton);
+
+                 cardDiv.appendChild(overlayDiv); // Append to cardDiv
+            }
+
+
+            return colDiv;
+        }
+
+        // Helper function to set text content safely and handle numeric values
+        function setTextContentSafe(elementId, value) {
+            const element = document.getElementById(elementId);
+            if (element) {
+                 if (value === null || value === undefined || value === '' || value === 'N/A') { // Also check for 'N/A'
+                     element.textContent = 'N/A';
+                 } else if (typeof value === 'number' && !isNaN(value)) {
+                     element.textContent = value.toFixed(2);
+                 } else {
+                    element.textContent = value.toString();
+                 }
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            // Código relacionado con el theme toggle
+            const toggleBtn = document.getElementById('toggle-theme');
+            const icon = document.getElementById('theme-icon');
+            // Cargar preferencia guardada
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'dark') {
+                document.documentElement.setAttribute('data-theme', 'dark');
+                localStorage.setItem('theme', 'dark');
+                icon.textContent = '🌙';
+            } else {
+                document.documentElement.setAttribute('data-theme', 'light');
+                localStorage.setItem('theme', 'light');
+                icon.textContent = '🌞';
+            }
+
+            toggleBtn.addEventListener('click', () => {
+                const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+                if (isDark) {
+                    document.documentElement.setAttribute('data-theme', 'light');
+                    localStorage.setItem('theme', 'light');
+                    icon.textContent = '🌞';
+                } else {
+                    document.documentElement.setAttribute('data-theme', 'dark');
+                    localStorage.setItem('theme', 'dark');
+                    icon.textContent = '🌙';
+                }
+            });
+
+            // Mover el listener del formulario dentro de DOMContentLoaded
+            document.getElementById('formularioCedula').addEventListener('submit', function (e) {
+                e.preventDefault(); // Prevent default form submission
+                const cedula = document.getElementById('cedula').value.trim();
+                if (!cedula) return;
+
+                const regresarBtn = document.getElementById('regresarBtn');
+                const mensaje = document.getElementById('mensaje');
+                const resultado = document.getElementById('resultado');
+                const mesesContainer = document.getElementById('mesesContainer');
+                const mesesPendientesSpan = document.getElementById('r-meses-pendientes');
+
+
+                // Limpiar resultados anteriores
+                mesesContainer.innerHTML = '';
+                mensaje.textContent = '';
+                if (mesesPendientesSpan) mesesPendientesSpan.innerHTML = ''; // Changed to innerHTML
+                resultado.classList.add('d-none');
+                regresarBtn.classList.add('d-none');
+                document.getElementById('formularioCedula').classList.remove('d-none');
+
+                console.log('Buscando deuda para cédula:', cedula);
+
+                google.script.run.withSuccessHandler(function (respuesta) {
+                    console.log('Respuesta de getDeudaByCedula:', respuesta);
+
+                    // Verificar si se encontró información o si hay un error
+                    if (!respuesta || respuesta.error) {
+                        mensaje.className = 'alert alert-warning';
+                        mensaje.textContent = respuesta && respuesta.error ? respuesta.error : 'No se encontró información para la cédula ingresada.';
+                        resultado.classList.remove('d-none');
+                        regresarBtn.classList.remove('d-none');
+                        return;
+                    }
+
+                    // Si se encontró información, ocultar formulario y mostrar resultado
+                    document.getElementById('formularioCedula').classList.add('d-none');
+                    resultado.classList.remove('d-none');
+
+                    // Mostrar datos generales
+                    setTextContentSafe('r-ncasa', respuesta.nCasa);
+                    setTextContentSafe('r-cedula', respuesta.cedula);
+                    setTextContentSafe('r-nombre', respuesta.nombre);
+                    setTextContentSafe('r-deuAnt', respuesta.deuAnt);
+                    setTextContentSafe('r-plazo', respuesta.plazo);
+                    setTextContentSafe('r-cuoExtOrdAnual', respuesta.cuoExtOrdAnual);
+
+                     // Mostrar mensaje de meses pendientes/estado de pagos (now uses innerHTML)
+                    if (mesesPendientesSpan) {
+                        mesesPendientesSpan.innerHTML = respuesta.mensajeMesesPendientes || 'Información no disponible';
+                    }
+
+
+                    // Mostrar mensaje general de deuda/solvente
+                     const hasDebt = (parseFloat(respuesta.deudaAtrasadaUSD) || 0) > 0 || (respuesta.mensajeMesesPendientes && respuesta.mensajeMesesPendientes.includes('danger')); // Check for danger badge for pending months
+                    mensaje.className = hasDebt ? 'alert alert-danger' : 'alert alert-success';
+                    mensaje.textContent = respuesta.mensaje || (hasDebt ? 'Tiene deuda pendiente' : 'Está solvente');
+
+
+                    // Definir nombres de meses y IDs de propiedades en orden (Enero a Diciembre)
+                    const monthNames = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+                    const monthPropIds = ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'set', 'oct', 'nov', 'dic'];
+
+                    // Determinar hasta qué mes mostrar (desde diciembre hacia atrás)
+                    const mesesAMostrarHastaIndex = respuesta.mesesAMostrarHastaIndex !== undefined && respuesta.mesesAMostrarHastaIndex !== null ? respuesta.mesesAMostrarHastaIndex : new Date().getMonth(); // Default to current month index (0-11)
+                    const actualMonthIndex = respuesta.mesActualIndex !== undefined && respuesta.mesActualIndex !== null ? respuesta.mesActualIndex : new Date().getMonth(); // Get actual current month index
+
+
+                     console.log('Meses a mostrar hasta index:', mesesAMostrarHastaIndex);
+                     console.log('Actual month index:', actualMonthIndex);
+
+                    // Generar y añadir los cards de los meses dinámicamente (de Diciembre a Enero)
+                    for (let i = 11; i >= 0; i--) { // Iterate from December (index 11) down to January (index 0)
+                        if (i <= mesesAMostrarHastaIndex) {
+                            const monthName = monthNames[i];
+                            const monthPrefix = monthPropIds[i];
+
+                             // Check if the month has any data to consider it 'paid'
+                             const isMonthPaid = (respuesta[monthPrefix] !== '' && respuesta[monthPrefix] !== null && respuesta[monthPrefix] !== undefined) ||
+                                                 (respuesta[monthPrefix + 'Sedemat'] !== '' && respuesta[monthPrefix + 'Sedemat'] !== null && respuesta[monthPrefix + 'Sedemat'] !== undefined) ||
+                                                 (respuesta[monthPrefix + 'AdoDeu'] !== '' && respuesta[monthPrefix + 'AdoDeu'] !== null && respuesta[monthPrefix + 'AdoDeu'] !== undefined);
+
+                            // Show anticipated payment badge if the month is after the actual current month
+                            const shouldShowAnticipatedBadge = i > actualMonthIndex;
+
+                            const monthCard = createMonthCard(monthName, shouldShowAnticipatedBadge, isMonthPaid); // Pass isPaid status
+                            mesesContainer.appendChild(monthCard);
+
+                            // Asignar valores a los spans dentro del card recién creado
+                            if (isMonthPaid) {
+                                 setTextContentSafe(`r-${monthPrefix}`, respuesta[monthPrefix]);
+                                 setTextContentSafe(`r-${monthPrefix}-sedemat`, respuesta[monthPrefix + 'Sedemat']);
+                                 setTextContentSafe(`r-${monthPrefix}-adodeu`, respuesta[monthPrefix + 'AdoDeu']);
+                            } else {
+                                // Set text to 'No pagado' if the month is not paid
+                                 document.getElementById(`r-${monthPrefix}`).textContent = 'No pagado';
+                                 document.getElementById(`r-${monthPrefix}-sedemat`).textContent = 'No pagado';
+                                 document.getElementById(`r-${monthPrefix}-adodeu`).textContent = 'No pagado';
+                            }
+                        }
+                    }
+
+                    regresarBtn.classList.remove('d-none'); // Mostrar el botón Regresar
+
+                }).getDeudaByCedula(cedula);
+            });
+        });
+
+        // Listener para el botón Regresar
+        document.getElementById('regresarBtn').addEventListener('click', function () {
+            document.getElementById('resultado').classList.add('d-none');
+            this.classList.add('d-none'); // Referencia al botón que fue clickeado
+            document.getElementById('formularioCedula').classList.remove('d-none');
+            document.getElementById('mensaje').textContent = ''; // Limpiar mensaje
+            const mesesPendientesSpan = document.getElementById('r-meses-pendientes');
+            if (mesesPendientesSpan) mesesPendientesSpan.innerHTML = ''; // Clear pending months message (using innerHTML)
+            document.getElementById('mesesContainer').innerHTML = ''; // Limpiar los cards de los meses
+        });
+
+    </script>
+    <style>
+        .month-title {
+            color: #007bff;
+            /* Blue color */
+            font-family: Arial, sans-serif;
+            /* Arial font */
+        }
+
+        .card {
+             position: relative; /* Added for overlay positioning */
+             overflow: hidden; /* Added to clip overlay at rounded corners */
+        }
+
+        .not-paid-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 0, 0, 0.5); /* Semi-transparent red */
+            color: white;
+            font-size: 1.5em;
+            font-weight: bold;
+            z-index: 1; /* Ensure it's above the card content */
+            pointer-events: none; /* Allow clicking through the overlay text, but not button */
+            opacity: 0; /* Initially hidden */
+            transition: opacity 0.3s ease-in-out; /* Smooth transition */
+            display: flex; /* Use flexbox for centering */
+            flex-direction: column; /* Arrange items vertically */
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            border-radius: inherit; /* Inherit border-radius from the card */
+        }
+
+        /* Make overlay content clickable */
+        .not-paid-overlay > * {
+            pointer-events: auto; 
+        }
+
+        .card:hover > .not-paid-overlay {
+            opacity: 1; /* Show on hover when cursor is over the parent card */
+        }
+
+    </style>
+</body>
+
+</html>
