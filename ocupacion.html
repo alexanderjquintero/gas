@@ -24,7 +24,8 @@
       <form id="myForm" class="needs-validation" novalidate="">
         <div class="row mb-4">
           <div class="col-md-6 text-center">
-            <img src="https://drive.google.com/thumbnail?sz=w500&amp;id=1prfzE2760WH6XZ9kG4k0VO5CdxJKiLNo" alt="Encabezado" class="img-fluid" style="max-width: 200px; filter: drop-shadow(0px 0px 15px #ffffff)">
+            <img src="https://drive.google.com/thumbnail?sz=w500&amp;id=1prfzE2760WH6XZ9kG4k0VO5CdxJKiLNo"
+              alt="Encabezado" class="img-fluid" style="max-width: 200px; filter: drop-shadow(0px 0px 15px #ffffff)">
           </div>
           <div class="col-md-6 d-flex align-items-center justify-content-center text-center">
             <h3 class="fw-bold mb-0">ASOCIACIÓN DE PROPIETARIOS Y VECINOS DE LA URBANIZACIÓN<br>SANTA FE III ETAPA</h3>
@@ -56,14 +57,14 @@
             </div>
             <div class="col-md-4">
               <div class="form-floating">
-                <input type="text" class="form-control" id="nombre" placeholder="Nombre"  name="nombre"  required>
+                <input type="text" class="form-control" id="nombre" placeholder="Nombre" name="nombre" required>
                 <div class="invalid-feedback">Ingrese el nombre</div>
                 <label for="nombre">Nombre</label>
               </div>
             </div>
             <div class="col-md-4">
               <div class="form-floating">
-                <input type="text" class="form-control" id="apellido" placeholder="Apellido" name="apellido"  required>
+                <input type="text" class="form-control" id="apellido" placeholder="Apellido" name="apellido" required>
                 <label for="apellido">Apellido</label>
                 <div class="invalid-feedback">Ingrese el apellido</div>
               </div>
@@ -71,7 +72,7 @@
             <!-- 5. Correo -->
             <div class="col-md-4">
               <div class="form-floating">
-                <input type="email" class="form-control" id="correo" placeholder="Correo"  name="correo"  required>
+                <input type="email" class="form-control" id="correo" placeholder="Correo" name="correo" required>
                 <div class="invalid-feedback">Ingrese un correo válido</div>
                 <label for="correo">Correo electrónico</label>
               </div>
@@ -79,7 +80,7 @@
             <!-- 4. Teléfono y WhatsApp -->
             <div class="col-md-4">
               <div class="form-floating">
-                <input type="tel" class="form-control" id="telefono" placeholder="Teléfono"  name="telefono"  required>
+                <input type="tel" class="form-control" id="telefono" placeholder="Teléfono" name="telefono" required>
                 <div class="invalid-feedback">Ingrese el número</div>
                 <label for="telefono">Teléfono</label>
               </div>
@@ -95,22 +96,40 @@
               <div class="invalid-feedback" style="color: var(--text-color);">Seleccione una opción</div>
             </div>
             <!-- 6. Número de casa y calle -->
-            <div class="col-md-4">
+            <div class="col-md-3">
               <div class="form-floating">
-                <input type="text" class="form-control" id="numCasa" placeholder="Número de casa"  name="ncasa"  required>
+                <select class="form-select" id="calle" name="ncalle" required>
+                  <option value="" disabled selected>Selecione una opcion</option>
+                  <option value="calle 83">Calle 83</option>
+                  <option value="calle 84b">Calle 84B</option>
+                  <option value="calle 84c">Calle 84C</option>
+                  <option value="calle 85b">Calle 85B</option>
+                  <option value="calle 85c">Calle 85C</option>
+                  <option value="calle 86b">Calle 86B</option>
+                  <option value="calle 86c">Calle 86C</option>
+                  <option value="calle 87b">Calle 87B</option>
+                  <option value="calle 87c">Calle 87C</option>
+                  <option value="calle 88b">Calle 88B</option>
+                  <option value="calle 88c">Calle 88C</option>
+                  <option value="calle 89b">Calle 89B</option>
+                  <option value="calle 89c">Calle 89C</option>
+                  <option value="calle 90b">Calle 90B</option>
+                  <option value="calle 90c">Calle 90C</option>
+                  <option value="calle 91c">Calle 91C</option>
+                </select>
+                <label for="calle"><i class="bi bi-signpost"></i> Número de calle</label>
+                <div class="invalid-feedback">Campo requerido</div>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="form-floating">
+                <input type="text" class="form-control" id="numCasa" placeholder="Número de casa" name="ncasa" required>
                 <div class="invalid-feedback">Campo requerido</div>
                 <label for="numCasa">N° de casa</label>
               </div>
             </div>
-            <div class="col-md-4">
-              <div class="form-floating">
-                <input type="text" class="form-control" id="calle" placeholder="Calle"  name="ncalle" required>
-                <div class="invalid-feedback">Campo requerido</div>
-                <label for="calle">Calle</label>
-              </div>
-            </div>
             <!-- 7. ¿Cancela condominio? -->
-            <div class="col-md-4">
+            <div class="col-md-3">
               <div class="btn-group" role="group">
                 <input type="radio" class="btn-check" name="condominio" id="pagaSi" value="SI" required>
                 <label class="btn btn-outline-success" for="pagaSi">Sí</label>
@@ -120,56 +139,119 @@
               <label class="form-label">¿Cancela condominio?</label>
               <div class="invalid-feedback" style="color: var(--text-color);">Seleccione una opción</div>
             </div>
-          </div>
-          <!-- 8. Sección pagador externo -->
-          <div id="pagadorExtra" class="row g-3 mt-3 d-none">
-            <div class="col-md-4">
-              <div class="form-floating">
-                <input type="text" class="form-control" id="pagadorCedula"  name="pagadorcedula"  placeholder="Cédula del pagador">
-                <label for="pagadorCedula">Cédula del pagador</label>
-              </div>
-            </div>
-            <div class="col-md-4">
-              <div class="form-floating">
-                <input type="text" class="form-control" id="pagadorNombre"  name="pagadornombre" placeholder="Nombre del pagador">
-                <label for="pagadorNombre">Nombre del pagador</label>
-              </div>
-            </div>
-            <div class="col-md-4">
-              <div class="form-floating">
-                <input type="text" class="form-control" id="pagadorApellido" name="pagadorapellido"  placeholder="Apellido del pagador">
-                <label for="pagadorApellido">Apellido del pagador</label>
-              </div>
-            </div>
-            <div class="col-md-4">
-              <div class="form-floating">
-                <input type="email" class="form-control" id="emailPagador" name="emailpagador"  placeholder="Correo" required>
-                <div class="invalid-feedback">Ingrese un correo válido</div>
-                <label for="correo">Correo electrónico del pagador</label>
-              </div>
-            </div>
-            <div class="col-md-4">
-              <div class="form-floating">
-                <input type="tel" class="form-control" id="Telefonopagador" name="telefonopagador" placeholder="Teléfono del pagador">
-                <label for="pagadorTelefono">Teléfono del pagador</label>
-              </div>
-            </div>
-            <div class="col-md-4">
+            <div class="col-md-3">
               <div class="btn-group" role="group">
-                <input type="radio" class="btn-check" name="whatsappPag" id="whatsappS" value="SI" required>
-                <label class="btn btn-outline-success" for="whatsappS">Sí</label>
-                <input type="radio" class="btn-check" name="whatsappPag" id="whatsappN" value="NO">
-                <label class="btn btn-outline-danger" for="whatsappN">No</label>
+                <input type="radio" class="btn-check" name="tieneVehiculo" id="vehiculoSi" value="SI" required>
+                <label class="btn btn-outline-success" for="vehiculoSi">Sí</label>
+                <input type="radio" class="btn-check" name="tieneVehiculo" id="vehiculoNo" value="NO">
+                <label class="btn btn-outline-danger" for="vehiculoNo">No</label>
               </div>
-              <label class="form-label">¿Tiene WhatsApp?</label>
+              <label class="form-label">¿Tiene vehículo?</label>
               <div class="invalid-feedback" style="color: var(--text-color);">Seleccione una opción</div>
+
+            </div>
+
+          </div>
+          <!-- 8. Sección Vehiculo -->
+          <div id="seccionVehiculo" class="row g-3 mt-3 d-none align-items-end">
+            <div id="vehiculoFieldsContainer" class="col-12">
+
+              <div class="vehiculo-fields-group row g-3" style="margin-bottom: 15px;">
+                <div class="col-md-4">
+                  <div class="form-floating">
+                    <input type="text" class="form-control" id="modeloVehiculo" name="modeloVehiculo"
+                      placeholder="Modelo del vehículo">
+                    <label for="modeloVehiculo">Modelo del vehículo</label>
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="form-floating">
+                    <input type="text" class="form-control" id="placaVehiculo" name="placaVehiculo"
+                      placeholder="Placa del vehículo">
+                    <label for="placaVehiculo">Placa del vehículo</label>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="form-floating">
+                    <input type="text" class="form-control" id="colorVehiculo" name="colorVehiculo"
+                      placeholder="Color del vehículo">
+                    <label for="colorVehiculo">Color del vehículo</label>
+                  </div>
+                </div>
+                <button type="button" class="btn btn-primary col-md-1" id="addVehiculoBtn"><i class="bi bi-plus-circle"></i></button> 
+              </div>
+
+            </div>
+            
+          </div>
+            <!-- 8. Sección pagador externo -->
+            <div id="pagadorExtra" class="row g-3 mt-3 d-none">
+              <div class="col-md-4">
+                <div class="form-floating">
+                  <input type="text" class="form-control" id="pagadorCedula" name="pagadorcedula"
+                    placeholder="Cédula del pagador">
+                  <label for="pagadorCedula">Cédula del pagador</label>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-floating">
+                  <input type="text" class="form-control" id="pagadorNombre" name="pagadornombre"
+                    placeholder="Nombre del pagador">
+                  <label for="pagadorNombre">Nombre del pagador</label>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-floating">
+                  <input type="text" class="form-control" id="pagadorCedula" name="pagadorcedula"
+                    placeholder="Cédula del pagador">
+                  <label for="pagadorCedula">Cédula del pagador</label>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-floating">
+                  <input type="text" class="form-control" id="pagadorNombre" name="pagadornombre"
+                    placeholder="Nombre del pagador">
+                  <label for="pagadorNombre">Nombre del pagador</label>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-floating">
+                  <input type="text" class="form-control" id="pagadorApellido" name="pagadorapellido"
+                    placeholder="Apellido del pagador">
+                  <label for="pagadorApellido">Apellido del pagador</label>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-floating">
+                  <input type="email" class="form-control" id="emailPagador" name="emailpagador" placeholder="Correo"
+                    required>
+                  <div class="invalid-feedback">Ingrese un correo válido</div>
+                  <label for="correo">Correo electrónico del pagador</label>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-floating">
+                  <input type="tel" class="form-control" id="Telefonopagador" name="telefonopagador"
+                    placeholder="Teléfono del pagador">
+                  <label for="pagadorTelefono">Teléfono del pagador</label>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="btn-group" role="group">
+                  <input type="radio" class="btn-check" name="whatsappPag" id="whatsappS" value="SI" required>
+                  <label class="btn btn-outline-success" for="whatsappS">Sí</label>
+                  <input type="radio" class="btn-check" name="whatsappPag" id="whatsappN" value="NO">
+                  <label class="btn btn-outline-danger" for="whatsappN">No</label>
+                </div>
+                <label class="form-label">¿Tiene WhatsApp?</label>
+                <div class="invalid-feedback" style="color: var(--text-color);">Seleccione una opción</div>
+              </div>
+            </div>
+            <!-- Botón -->
+            <div class="col-12 text-center">
+              <button class="btn btn-primary btn-lg" type="submit" id="btnEnviar" disabled>Enviar</button>
             </div>
           </div>
-          <!-- Botón -->
-          <div class="col-12 text-center">
-            <button class="btn btn-primary btn-lg" type="submit" id="btnEnviar" disabled>Enviar</button>
-          </div>
-        </div>
       </form>
     </div>
   </div>
@@ -219,35 +301,35 @@
 
 
     // Autocompletar datos por cédula
-document.getElementById('cedula').addEventListener('blur', function () {
-  const cedulaInput = this;
-  const cedula = cedulaInput.value.trim();
+    document.getElementById('cedula').addEventListener('blur', function () {
+      const cedulaInput = this;
+      const cedula = cedulaInput.value.trim();
 
-  if (!cedula) return;
+      if (!cedula) return;
 
-  // Llama a la función de Apps Script
-  google.script.run
-    .withSuccessHandler(function (result) {
-      if (result && result.encontrado) {
-        document.getElementById('nombre').value = result.firstName || '';
-        document.getElementById('apellido').value = result.lastName || '';
-        document.getElementById('telefono').value = result.phone || '';
-        document.getElementById('correo').value = result.email || '';
-        // Si tienes campos para siteC y siteN, los puedes llenar aquí
-        // document.getElementById('siteC').value = result.siteC || '';
-        // document.getElementById('siteN').value = result.siteN || '';
-      } else {
-        // Si no se encuentra, limpia los campos
-        document.getElementById('nombre').value = '';
-        document.getElementById('apellido').value = '';
-        document.getElementById('telefono').value = '';
-        document.getElementById('correo').value = '';
-        // document.getElementById('siteC').value = '';
-        // document.getElementById('siteN').value = '';
-      }
-    })
-    .buscarOcupantePoridC(cedula);
-});
+      // Llama a la función de Apps Script
+      google.script.run
+        .withSuccessHandler(function (result) {
+          if (result && result.encontrado) {
+            document.getElementById('nombre').value = result.firstName || '';
+            document.getElementById('apellido').value = result.lastName || '';
+            document.getElementById('telefono').value = result.phone || '';
+            document.getElementById('correo').value = result.email || '';
+            // Si tienes campos para siteC y siteN, los puedes llenar aquí
+            // document.getElementById('siteC').value = result.siteC || '';
+            // document.getElementById('siteN').value = result.siteN || '';
+          } else {
+            // Si no se encuentra, limpia los campos
+            document.getElementById('nombre').value = '';
+            document.getElementById('apellido').value = '';
+            document.getElementById('telefono').value = '';
+            document.getElementById('correo').value = '';
+            // document.getElementById('siteC').value = '';
+            // document.getElementById('siteN').value = '';
+          }
+        })
+        .buscarOcupantePoridC(cedula);
+    });
 
     window.addEventListener("DOMContentLoaded", () => {
       const form = document.getElementById('myForm');
@@ -255,10 +337,61 @@ document.getElementById('cedula').addEventListener('blur', function () {
       const radiosCondominio = document.getElementsByName('condominio');
       const seccionPagador = document.getElementById('pagadorExtra');
 
+      const radiosVehiculo = document.getElementsByName('tieneVehiculo');
+      const seccionVehiculo = document.getElementById('seccionVehiculo');
+
+      // Referencias para duplicar campos de vehículo
+      const addVehiculoBtn = document.getElementById('addVehiculoBtn');
+      const vehiculoFieldsContainer = document.getElementById('vehiculoFieldsContainer');
+
+      // Event listener para duplicar campos de vehículo
+      addVehiculoBtn.addEventListener('click', () => {
+        const firstVehiculoGroup = vehiculoFieldsContainer.querySelector('.vehiculo-fields-group');
+        const clonedVehiculoGroup = firstVehiculoGroup.cloneNode(true);
+        clonedVehiculoGroup.querySelectorAll('input').forEach(input => {
+          input.value = ''; // Clear values
+          input.required = true; // Ensure cloned fields are also required
+
+        });
+
+        // Remove the add button from the cloned group
+        clonedVehiculoGroup.querySelector('#addVehiculoBtn')?.remove();
+        // Add a remove button to the cloned group
+        const removeButton = document.createElement('button');
+        removeButton.type = 'button';
+        removeButton.classList.add('btn', 'btn-danger', 'col-md-1');
+        removeButton.innerHTML = '<i class="bi bi-dash-circle"></i>';
+        removeButton.addEventListener('click', () => { clonedVehiculoGroup.remove(); });
+        clonedVehiculoGroup.appendChild(removeButton);
+        vehiculoFieldsContainer.appendChild(clonedVehiculoGroup); // Insertar antes del botón
+      });
+
+      // Mostrar u ocultar sección de vehículo
+      radiosVehiculo.forEach(radio => {
+        radio.addEventListener('change', () => {
+          if (radio.value === 'SI' && radio.checked) {
+            seccionVehiculo.querySelectorAll('input').forEach(input => input.required = true);
+            seccionVehiculo.classList.remove('d-none');
+          } else {
+            seccionVehiculo.classList.add('d-none');
+            seccionVehiculo.querySelectorAll('input').forEach(input => {
+              input.required = false;
+              input.value = '';
+            });
+            // Remove all cloned vehicle groups when hiding the section
+            vehiculoFieldsContainer.querySelectorAll('.vehiculo-fields-group').forEach((group, index) => {
+                if (index > 0) { // Keep the first group
+                    group.remove();
+
+                }
+            });
+          }
+        });
+      });
       // Mostrar u ocultar sección de pagador
       radiosCondominio.forEach(radio => {
         radio.addEventListener('change', () => {
-          if (radio.value === 'no' && radio.checked) {
+          if (radio.value === 'NO' && radio.checked) {
             seccionPagador.classList.remove('d-none');
             seccionPagador.querySelectorAll('input').forEach(input => input.required = true);
           } else {
@@ -313,9 +446,18 @@ document.getElementById('cedula').addEventListener('blur', function () {
 
           // Información sobre el pago de condominio
           cancelaCondominio: document.querySelector('input[name="condominio"]:checked')?.value || "",
+          tieneVehiculo: document.querySelector('input[name="tieneVehiculo"]:checked')?.value || "",
 
           // Datos del pagador (opcional)
           nombrePagador: document.getElementById('pagadorNombre')?.value.trim() || "",
+
+          // Datos del vehículo (opcional)
+          // Recopilar todos los valores de los inputs con el mismo nombre
+          modeloVehiculo: Array.from(document.querySelectorAll('input[name="modeloVehiculo"]')).map(input => input.value.trim()).filter(value => value !== "").join(' - ') || "",
+          placaVehiculo: Array.from(document.querySelectorAll('input[name="placaVehiculo"]')).map(input => input.value.trim()).filter(value => value !== "").join(' - ') || "",
+          colorVehiculo: Array.from(document.querySelectorAll('input[name="colorVehiculo"]')).map(input => input.value.trim()).filter(value => value !== "").join(' - ') || "",
+
+
           apellidoPagador: document.getElementById('pagadorApellido')?.value.trim() || "",
           numeroCedulaPagador: document.getElementById('pagadorCedula')?.value.trim() || "",
           emailPagador: document.getElementById('emailPagador')?.value.trim() || "",
